@@ -116,7 +116,7 @@ public sealed partial class AGhostCommand : LocalizedCommands
         }
 
         var comp = _entities.GetComponent<GhostComponent>(ghost);
-        ghostSystem.SetCanReturnToBody(comp, canReturn);
+        ghostSystem.SetCanReturnToBody((ghost, comp), canReturn);
 
         // Apply admin OOC color to the admin ghost
         ghostSystem.ApplyAdminOOCColor(ghost, mindId);
