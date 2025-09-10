@@ -10,7 +10,7 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
 using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
-using Content.Shared.Mech.EntitySystems;
+using Content.Shared.Mech.Systems;
 using Content.Shared.Mech.Equipment.Components; // Monolith
 using Content.Shared.Movement.Events;
 using Content.Shared.Popups;
@@ -380,11 +380,11 @@ public sealed partial class MechSystem : SharedMechSystem
             RaiseLocalEvent(ent, ev);
         }
 
-        var state = new MechBoundUiState
-        {
-            EquipmentStates = ev.States
-        };
-        _ui.SetUiState(uid, MechUiKey.Key, state);
+        // var state = new MechBoundUiState
+        // {
+        //     EquipmentStates = ev.States
+        // };
+        _ui.SetUiState(uid, MechUiKey.Key, null);
     }
 
     public override void BreakMech(EntityUid uid, MechComponent? component = null)

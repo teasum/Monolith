@@ -3,7 +3,7 @@ using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
-using Content.Shared.Mech.Module.Components;
+//using Content.Shared.Mech.Module.Components;
 using Content.Shared.Mech.Systems;
 using Content.Shared.PowerCell;
 using Content.Shared.Power.EntitySystems;
@@ -45,8 +45,8 @@ public sealed class MechInterfaceSystem : EntitySystem
             subs =>
             {
                 subs.Event<MechEquipmentRemoveMessage>(HandleEquipmentRemove);
-                subs.Event<MechModuleRemoveMessage>(HandleModuleRemove);
-                subs.Event<MechCabinAirMessage>(HandleCabinPurge);
+                //subs.Event<MechModuleRemoveMessage>(HandleModuleRemove);
+                //subs.Event<MechCabinAirMessage>(HandleCabinPurge);
 
                 subs.Event<MechDnaLockRegisterMessage>(HandleDnaLockRegister);
                 subs.Event<MechDnaLockToggleMessage>(HandleDnaLockToggle);
@@ -58,7 +58,7 @@ public sealed class MechInterfaceSystem : EntitySystem
                 subs.Event<MechEquipmentUiMessage>(HandleEquipmentUiMessageRelay);
                 subs.Event<MechGrabberEjectMessage>(HandleEquipmentUiMessageRelay);
                 subs.Event<MechSoundboardPlayMessage>(HandleEquipmentUiMessageRelay);
-                subs.Event<MechGeneratorEjectFuelMessage>(HandleEquipmentUiMessageRelay);
+                //subs.Event<MechGeneratorEjectFuelMessage>(HandleEquipmentUiMessageRelay);
             });
     }
 
@@ -93,10 +93,10 @@ public sealed class MechInterfaceSystem : EntitySystem
         RelayEquipmentUiMessage(args);
     }
 
-    private void HandleEquipmentUiMessageRelay(Entity<MechComponent> ent, ref MechGeneratorEjectFuelMessage args)
-    {
-        RelayEquipmentUiMessage(args);
-    }
+    // private void HandleEquipmentUiMessageRelay(Entity<MechComponent> ent, ref MechGeneratorEjectFuelMessage args)
+    // {
+    //     RelayEquipmentUiMessage(args);
+    // }
 
     private void HandleEquipmentRemove(Entity<MechComponent> ent, ref MechEquipmentRemoveMessage args)
     {
@@ -108,38 +108,38 @@ public sealed class MechInterfaceSystem : EntitySystem
         UpdateUi(ent);
     }
 
-    private void HandleModuleRemove(Entity<MechComponent> ent, ref MechModuleRemoveMessage args)
-    {
-        var module = GetEntity(args.Module);
-        if (!ent.Comp.ModuleContainer.Contains(module))
-            return;
+    // private void HandleModuleRemove(Entity<MechComponent> ent, ref MechModuleRemoveMessage args)
+    // {
+    //     var module = GetEntity(args.Module);
+    //     if (!ent.Comp.ModuleContainer.Contains(module))
+    //         return;
 
-        _container.Remove(module, ent.Comp.ModuleContainer);
-        UpdateUi(ent);
-    }
+    //     _container.Remove(module, ent.Comp.ModuleContainer);
+    //     UpdateUi(ent);
+    // }
 
-    private void HandleCabinPurge(Entity<MechComponent> ent, ref MechCabinAirMessage args)
-    {
-        if (!TryComp<MechCabinAirComponent>(ent, out var cabin))
-            return;
+    // private void HandleCabinPurge(Entity<MechComponent> ent, ref MechCabinAirMessage args)
+    // {
+    //     if (!TryComp<MechCabinAirComponent>(ent, out var cabin))
+    //         return;
 
-        var atmos = EntityManager.System<AtmosphereSystem>();
-        var environment = atmos.GetContainingMixture(ent.Owner, false, true);
-        if (environment != null)
-        {
-            var removed = cabin.Air.RemoveRatio(1f);
-            atmos.Merge(environment, removed);
-        }
-        else
-        {
-            cabin.Air.Clear();
-        }
+    //     var atmos = EntityManager.System<AtmosphereSystem>();
+    //     var environment = atmos.GetContainingMixture(ent.Owner, false, true);
+    //     if (environment != null)
+    //     {
+    //         var removed = cabin.Air.RemoveRatio(1f);
+    //         atmos.Merge(environment, removed);
+    //     }
+    //     else
+    //     {
+    //         cabin.Air.Clear();
+    //     }
 
-        var purgeComp = EnsureComp<MechCabinPurgeComponent>(ent);
-        purgeComp.CooldownRemaining = purgeComp.CooldownDuration;
-        Dirty(ent, purgeComp);
-        UpdateUi(ent);
-    }
+    //     var purgeComp = EnsureComp<MechCabinPurgeComponent>(ent);
+    //     purgeComp.CooldownRemaining = purgeComp.CooldownDuration;
+    //     Dirty(ent, purgeComp);
+    //     UpdateUi(ent);
+    // }
 
     private void HandleDnaLockRegister(Entity<MechComponent> ent, ref MechDnaLockRegisterMessage args)
     {
@@ -203,109 +203,109 @@ public sealed class MechInterfaceSystem : EntitySystem
         ent.Comp.LastUiUpdate = _gameTiming.CurTime;
 
         var equipment = new List<NetEntity>();
-        foreach (var equipmentEnt in ent.Comp.EquipmentContainer.ContainedEntities)
-        {
-            equipment.Add(GetNetEntity(equipmentEnt));
-        }
+        // foreach (var equipmentEnt in ent.Comp.EquipmentContainer.ContainedEntities)
+        // {
+        //     equipment.Add(GetNetEntity(equipmentEnt));
+        // }
 
         var modules = new List<NetEntity>();
-        foreach (var modulesEnt in ent.Comp.ModuleContainer.ContainedEntities)
-        {
-            modules.Add(GetNetEntity(modulesEnt));
-        }
+        // foreach (var modulesEnt in ent.Comp.ModuleContainer.ContainedEntities)
+        // {
+        //     modules.Add(GetNetEntity(modulesEnt));
+        // }
 
-        MechFanModuleComponent? fanModule = null;
-        foreach (var modulesEnt in ent.Comp.ModuleContainer.ContainedEntities)
-        {
-            if (!TryComp<MechFanModuleComponent>(modulesEnt, out var fan))
-                continue;
+        // MechFanModuleComponent? fanModule = null;
+        // foreach (var modulesEnt in ent.Comp.ModuleContainer.ContainedEntities)
+        // {
+        //     if (!TryComp<MechFanModuleComponent>(modulesEnt, out var fan))
+        //         continue;
 
-            fanModule = fan;
-        }
+        //     fanModule = fan;
+        // }
 
-        var fanActive = fanModule?.IsActive ?? false;
-        var fanState = fanModule?.State ?? MechFanState.Na;
-        var filterEnabled = fanModule?.FilterEnabled ?? false;
+        //var fanActive = fanModule?.IsActive ?? false;
+        //var fanState = fanModule?.State ?? MechFanState.Na;
+        //var filterEnabled = fanModule?.FilterEnabled ?? false;
 
         var hasFanModule = false;
         var hasGasModule = false;
         var moduleUsed = 0;
-        foreach (var modulesEnt in ent.Comp.ModuleContainer.ContainedEntities)
-        {
-            if (HasComp<MechFanModuleComponent>(modulesEnt))
-                hasFanModule = true;
-            if (HasComp<MechAirTankModuleComponent>(modulesEnt))
-                hasGasModule = true;
-            if (TryComp<MechModuleComponent>(modulesEnt, out var m))
-                moduleUsed += m.Size;
-        }
+        // foreach (var modulesEnt in ent.Comp.ModuleContainer.ContainedEntities)
+        // {
+        //     if (HasComp<MechFanModuleComponent>(modulesEnt))
+        //         hasFanModule = true;
+        //     if (HasComp<MechAirTankModuleComponent>(modulesEnt))
+        //         hasGasModule = true;
+        //     if (TryComp<MechModuleComponent>(modulesEnt, out var m))
+        //         moduleUsed += m.Size;
+        // }
 
         var cabinPressure = 0f;
         var cabinTemperature = 0f;
         var gasAmountLiters = 0f;
         var tankPressure = 0f;
-        if (TryComp<MechCabinAirComponent>(ent.Owner, out var cabin))
-        {
-            cabinPressure = cabin.Air.Pressure;
-            cabinTemperature = cabin.Air.Temperature;
-        }
+        // if (TryComp<MechCabinAirComponent>(ent.Owner, out var cabin))
+        // {
+        //     cabinPressure = cabin.Air.Pressure;
+        //     cabinTemperature = cabin.Air.Temperature;
+        // }
 
-        GasMixture? tankAir = null;
-        foreach (var modulesEnt in ent.Comp.ModuleContainer.ContainedEntities)
-        {
-            if (HasComp<MechAirTankModuleComponent>(modulesEnt))
-                continue;
+        // GasMixture? tankAir = null;
+        // foreach (var modulesEnt in ent.Comp.ModuleContainer.ContainedEntities)
+        // {
+        //     if (HasComp<MechAirTankModuleComponent>(modulesEnt))
+        //         continue;
 
-            if (!TryComp<GasTankComponent>(modulesEnt, out var tank))
-                continue;
+        //     if (!TryComp<GasTankComponent>(modulesEnt, out var tank))
+        //         continue;
 
-            tankAir = tank.Air;
-        }
+        //     tankAir = tank.Air;
+        // }
 
-        if (tankAir != null)
-        {
-            // Pressure straight from tank and amount in liters.
-            tankPressure = tankAir.Pressure;
-            var pressure = MathF.Max(tankAir.Pressure, 0f);
-            if (pressure > 0)
-                gasAmountLiters = tankAir.TotalMoles * Atmospherics.R * tankAir.Temperature / pressure;
-        }
+        // if (tankAir != null)
+        // {
+        //     // Pressure straight from tank and amount in liters.
+        //     tankPressure = tankAir.Pressure;
+        //     var pressure = MathF.Max(tankAir.Pressure, 0f);
+        //     if (pressure > 0)
+        //         gasAmountLiters = tankAir.TotalMoles * Atmospherics.R * tankAir.Temperature / pressure;
+        // }
 
         // Compute energy from battery.
         var energy = 0f;
         var maxEnergy = 0f;
-        if (_powerCell.TryGetBatteryFromSlot(ent.Owner, out var battery))
-        {
-            energy = _battery.GetCharge(battery.Value.AsNullable());
-            maxEnergy = battery.Value.Comp.MaxCharge;
-        }
+        // if (_powerCell.TryGetBatteryFromSlot(ent.Owner, out var battery))
+        // {
+        //     energy = _battery.GetCharge(battery.Value.AsNullable());
+        //     maxEnergy = battery.Value.Comp.MaxCharge;
+        // }
 
         var purgeAvailable = false;
-        if (TryComp<MechCabinPurgeComponent>(ent.Owner, out var purgeComp))
-            purgeAvailable = purgeComp.CooldownRemaining <= 0;
+        // if (TryComp<MechCabinPurgeComponent>(ent.Owner, out var purgeComp))
+        //     purgeAvailable = purgeComp.CooldownRemaining <= 0;
 
         var state = new MechBoundUiState
         {
             Equipment = equipment,
             Modules = modules,
             IsAirtight = ent.Comp.Airtight,
-            FanActive = fanActive,
-            FanState = fanState,
-            FilterEnabled = filterEnabled,
+            //FanActive = fanActive,
+            //FanState = fanState,
+            //FilterEnabled = filterEnabled,
             CabinPressureLevel = cabinPressure,
             CabinTemperature = cabinTemperature,
             GasAmountLiters = gasAmountLiters,
             TankPressure = tankPressure,
             HasFanModule = hasFanModule,
             HasGasModule = hasGasModule,
-            ModuleSpaceMax = ent.Comp.MaxModuleAmount,
+            //ModuleSpaceMax = ent.Comp.MaxModuleAmount,
             ModuleSpaceUsed = moduleUsed,
             PilotPresent = ent.Comp.PilotSlot.ContainedEntity != null,
             Integrity = ent.Comp.Integrity.Float(),
             MaxIntegrity = ent.Comp.MaxIntegrity.Float(),
             Energy = energy,
             MaxEnergy = maxEnergy,
-            CanAirtight = ent.Comp.CanAirtight,
+            //CanAirtight = ent.Comp.CanAirtight,
             EquipmentUsed = ent.Comp.EquipmentContainer.ContainedEntities.Count,
             MaxEquipmentAmount = ent.Comp.MaxEquipmentAmount,
             IsBroken = ent.Comp.Broken,
@@ -325,7 +325,7 @@ public sealed class MechInterfaceSystem : EntitySystem
 
         // Collect equipment and module UI states.
         CollectEquipmentUiStates(ent.Comp.EquipmentContainer.ContainedEntities, state.EquipmentUiStates);
-        CollectEquipmentUiStates(ent.Comp.ModuleContainer.ContainedEntities, state.EquipmentUiStates);
+        //CollectEquipmentUiStates(ent.Comp.ModuleContainer.ContainedEntities, state.EquipmentUiStates);
 
         _uiSystem.SetUiState(ent.Owner, MechUiKey.Key, state);
     }

@@ -50,37 +50,49 @@ public sealed partial class RCDMenuBoundUserInterface : BoundUserInterface
         _menu.OpenOverMouseScreenPosition();
     }
 
-    private IEnumerable<RadialMenuNestedLayerOption> ConvertToButtons(HashSet<ProtoId<RCDPrototype>> prototypes)
+    private IEnumerable<RadialMenuOptionBase> ConvertToButtons(HashSet<ProtoId<RCDPrototype>> prototypes)
     {
-        Dictionary<string, List<RadialMenuActionOption>> buttonsByCategory = new();
+        Dictionary<string, List<RadialMenuActionOptionBase>> buttonsByCategory = new();
+        ValueList<RadialMenuActionOptionBase> topLevelActions = new();
         foreach (var protoId in prototypes)
         {
             var prototype = _prototypeManager.Index(protoId);
+            if (prototype.Category == TopLevelActionCategory)
+            {
+                var topLevelActionOption = new RadialMenuActionOption<RCDPrototype>(HandleMenuOptionClick, prototype)
+                {
+                    IconSpecifier = RadialMenuIconSpecifier.With(prototype.Sprite),
+                    ToolTip = GetTooltip(prototype)
+                };
+                topLevelActions.Add(topLevelActionOption);
+                continue;
+            }
+
             if (!PrototypesGroupingInfo.TryGetValue(prototype.Category, out var groupInfo))
                 continue;
 
             if (!buttonsByCategory.TryGetValue(prototype.Category, out var list))
             {
-                list = new List<RadialMenuActionOption>();
+                list = new List<RadialMenuActionOptionBase>();
                 buttonsByCategory.Add(prototype.Category, list);
             }
 
             var actionOption = new RadialMenuActionOption<RCDPrototype>(HandleMenuOptionClick, prototype)
             {
-                Sprite = prototype.Sprite,
+                IconSpecifier = RadialMenuIconSpecifier.With(prototype.Sprite),
                 ToolTip = GetTooltip(prototype)
             };
             list.Add(actionOption);
         }
 
-        var models = new RadialMenuNestedLayerOption[buttonsByCategory.Count];
+        var models = new RadialMenuOptionBase[buttonsByCategory.Count + topLevelActions.Count];
         var i = 0;
         foreach (var (key, list) in buttonsByCategory)
         {
             var groupInfo = PrototypesGroupingInfo[key];
             models[i] = new RadialMenuNestedLayerOption(list)
             {
-                Sprite = groupInfo.Sprite,
+                IconSpecifier = RadialMenuIconSpecifier.With(groupInfo.Sprite),
                 ToolTip = Loc.GetString(groupInfo.Tooltip)
             };
             i++;
