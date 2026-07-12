@@ -217,20 +217,19 @@ public abstract partial class SharedEntityStorageSystem : EntitySystem
         if (!ResolveStorage(uid, ref component))
             return;
 
-        if (component.Open)
+        if (target.Comp.Open)
             return;
 
-        var beforeev = new StorageBeforeOpenEvent();
-        RaiseLocalEvent(uid, ref beforeev);
-        component.Open = true;
-        Dirty(uid, component);
-        EmptyContents(uid, component);
-        ModifyComponents(uid, component);
-        if (_net.IsClient && _timing.IsFirstTimePredicted)
-            _audio.PlayPvs(component.OpenSound, uid);
-        ReleaseGas(uid, component);
-        var afterev = new StorageAfterOpenEvent();
-        RaiseLocalEvent(uid, ref afterev);
+        var beforeev = new StorageBeforeOpenEvent(user);
+        RaiseLocalEvent(target, ref beforeev);
+        target.Comp.Open = true;
+        Dirty(target);
+        EmptyContents(target, target.Comp);
+        ModifyComponents(target, target.Comp);
+        _audio.PlayLocal(target.Comp.OpenSound, target, user);
+        ReleaseGas(target, target.Comp);
+        var afterev = new StorageAfterOpenEvent(user);
+        RaiseLocalEvent(target, ref afterev);
     }
 
     public void CloseStorage(EntityUid uid, SharedEntityStorageComponent? component = null)
@@ -238,18 +237,18 @@ public abstract partial class SharedEntityStorageSystem : EntitySystem
         if (!ResolveStorage(uid, ref component))
             return;
 
-        if (!component.Open)
+        if (!target.Comp.Open)
             return;
 
         // Prevent the container from closing if it is queued for deletion. This is so that the container-emptying
         // behaviour of DestructionEventArgs is respected. This exists because malicious players were using
         // destructible boxes to delete entities by having two players simultaneously destroy and close the box in
         // the same tick.
-        if (EntityManager.IsQueuedForDeletion(uid))
+        if (EntityManager.IsQueuedForDeletion(target))
             return;
 
-        component.Open = false;
-        Dirty(uid, component);
+        target.Comp.Open = false;
+        Dirty(target);
 
         var targetCoordinates = new EntityCoordinates(uid, component.EnteringOffset);
 
@@ -387,7 +386,7 @@ public abstract partial class SharedEntityStorageSystem : EntitySystem
         if (!CanOpen(user, target, silent))
             return false;
 
-        OpenStorage(target);
+        OpenStorage(target, user);
         return true;
     }
 
@@ -398,7 +397,7 @@ public abstract partial class SharedEntityStorageSystem : EntitySystem
             return false;
         }
 
-        CloseStorage(target);
+        CloseStorage(target, user);
         return true;
     }
 

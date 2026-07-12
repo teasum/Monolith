@@ -14,7 +14,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared.CardboardBox;
 
-public abstract class SharedCardboardBoxSystem : EntitySystem
+public abstract partial class SharedCardboardBoxSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private INetManager _net = default!;
@@ -30,7 +30,7 @@ public abstract class SharedCardboardBoxSystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (!TryComp<EntityStorageComponent>(ent, out var box))
+        if (!TryComp<SharedEntityStorageComponent>(ent, out var box))
             return;
 
         if (!args.Complex)
