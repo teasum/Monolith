@@ -1,0 +1,66 @@
+- type: entity
+  id: LaserEyeGun
+  name: Лазер из глаз
+  description: Выстреливает лучом из глаз
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 0
+    rechargeSound:
+      path: /Audio/_Goobstation/Weapons/Effects/laserpointer.ogg
+  - type: BasicEntityAmmoProvider
+    proto: EyeLaser
+    capacity: 2
+    count: 2
+  - type: Gun
+    minAngle: 5
+    maxAngle: 15
+    fireRate: 4
+    selectedMode: FullAuto
+    availableModes:
+    - FullAuto
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/laser3.ogg
+    soundEmpty: null
+    projectileSpeed: 30
+    clumsyProof: true
+
+- type: entity
+  parent: BasicHitscan
+  id: EyeLaser
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: HitscanBasicDamage
+    damage:
+      types:
+        Heat: 100000
+        Structure: 10000
+  - type: HitscanBasicRaycast
+    maxDistance: 50.0
+
+- type: entity
+  id: ActionLaserEyes
+  categories: [ HideSpawnMenu ]
+  name: "Лазеры из глаз"
+  description: "Выстреливает лазером из глаз в указанную точку"
+  components:
+  - type: WorldTargetAction
+    icon: { sprite : _EinsteinEngines/Mobs/Species/IPC/organs.rsi, state: eyes }
+    event: !type:ActionGunShootEvent
+    priority: 2
+    checkCanAccess: false
+    range: 0
+    itemIconStyle: BigAction
+
+- type: entity
+  id: ForgeCyberneticLaserEyes
+  parent: BasicCyberneticEyes
+  name: Глаза-лазеры
+  description: Глаза, позволяющие пускать лазеры.
+  components:
+  - type: Organ
+    onAdd:
+    - type: ActionGun
+      action: ActionLaserEyes
+      gunProto: LaserEyeGun
+
