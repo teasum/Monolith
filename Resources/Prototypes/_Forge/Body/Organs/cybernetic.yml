@@ -63,3 +63,16 @@
     - type: ForgeInjectOnUnarmedHit
       damageType: Poison
       amount: 2
+
+- type: entity
+  id: CyberneticLaserEyes
+  parent: BasicCyberneticEyes
+  name: Глаза-лазеры
+  description: Глаза, позволяющие пускать лазеры.
+  components:
+  - type: OrganEffect
+  - type: Organ
+    onAdd:
+    - type: ActionGun
+      action: ActionLaserEyes
+      gunProto: LaserEyeGun

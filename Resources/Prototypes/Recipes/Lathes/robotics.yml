@@ -277,7 +277,7 @@
     Plastic: 500
     Gold: 300
     Silver: 300
-    
+
 - type: latheRecipe
   id: DexLeftHand
   result: DexLeftHand
@@ -299,3 +299,15 @@
     Plastic: 250
     Gold: 150
     Silver: 150
+
+
+- type: latheRecipe
+  id: CyberneticLaserEyes
+  result: CyberneticLaserEyes
+  completetime: 5
+  materials:
+    Steel: 1000
+    Glass: 500
+    Plastic: 500
+    Gold: 1000
+    Silver: 1000
