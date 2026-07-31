@@ -66,13 +66,15 @@
 
 - type: entity
   id: CyberneticLaserEyes
-  parent: BasicCyberneticEyes
-  name: Глаза-лазеры
-  description: Глаза, позволяющие пускать лазеры.
+  parent: BaseCyberneticEyes
+  name: кибернетические глаза-лазеры
+  description: Пара кибернитических глаз, которые улучшают ваше зрение и позволят пускать из глаз лазеры #A pair of cybernetic eyes that enhance your vision, and protect you from eye damage..
   components:
   - type: OrganEffect
   - type: Organ
     onAdd:
+    - type: FlashImmunity
+    - type: EyeProtection
     - type: ActionGun
       action: ActionLaserEyes
       gunProto: LaserEyeGun

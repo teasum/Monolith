@@ -46,6 +46,7 @@
     - BasicCyberneticEyes
     - SecurityCyberneticEyes
     - MedicalCyberneticEyes
+    - CyberneticLaserEyes
 
 - type: entity
   parent: NFBaseBlueprintMedical

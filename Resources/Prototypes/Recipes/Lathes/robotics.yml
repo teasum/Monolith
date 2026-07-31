@@ -300,7 +300,6 @@
     Gold: 150
     Silver: 150
 
-
 - type: latheRecipe
   id: CyberneticLaserEyes
   result: CyberneticLaserEyes

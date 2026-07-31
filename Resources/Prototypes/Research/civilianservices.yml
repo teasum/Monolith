@@ -200,6 +200,7 @@
   - BasicCyberneticEyes
   - SecurityCyberneticEyes
   - MedicalCyberneticEyes
+  - CyberneticLaserEyes # Forge-Change
   - ForgeVoiceModuleImplanter # Forge-Change
   - ForgeSubdermalArmorImplant # Forge-Change
   - ForgeReflectiveSubdermalArmorImplant # Forge-Change
