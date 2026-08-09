@@ -67,4 +67,7 @@
     ports:
     - SoulkillerLink
   - type: SoulkillerConnector
+    whitelist:
+      components:
+      - BorgChassis
 

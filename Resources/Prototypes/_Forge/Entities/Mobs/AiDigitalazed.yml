@@ -17,22 +17,17 @@
   - type: Sprite
   - type: SiliconLawProvider
     laws: VesselLawset
-  - type: RandomMetadata
-    nameSegments: [ VesselCoreNameset ]
 
 
 - type: entity
   parent: PlayerStationAiEmpty
   id: MobAiDigitalazed
-  name: Система переноса сознания
+  name: Пустая система переноса сознания
   description: Автономное ядро искусственного интеллекта. Через коннектор борг может перенести свое сознание в это ядро.
-  suffix: ТелАди
   components:
   - type: Soulkiller
-    brainProto: SoulkillerBrain
-    whitelist:
-      components:
-      - BorgChassis
+    brainProto: StationAiBrainDigitalazed
+    defaultDigitizedName: "Оцифрованная личность"
   - type: ContainerComp
     proto: AiHeldVessel
     container: station_ai_mind_slot

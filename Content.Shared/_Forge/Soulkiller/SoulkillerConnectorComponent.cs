@@ -1,5 +1,6 @@
 // Author: @lenta313. Все права не защищены / No rights reserved.
 using Robust.Shared.GameStates;
+using Content.Shared.Whitelist;
 
 namespace Content.Shared._Forge.Soulkiller;
 
@@ -18,6 +19,11 @@ public sealed partial class SoulkillerConnectorComponent : Component
     /// </summary>
     [DataField]
     public EntityUid? LinkedSoulkiller;
+    /// <summary>
+    /// Species allowed to connect. Only humanoids of this species may use the connector.
+    /// </summary>
+    [DataField]
+    public EntityWhitelist? Whitelist;
 
     /// <summary>
     /// Time it takes to forcibly crack an occupied capsule open and rip the operator out.

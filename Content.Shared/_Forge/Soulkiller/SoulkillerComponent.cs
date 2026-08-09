@@ -66,9 +66,9 @@ public sealed partial class SoulkillerComponent : Component
     public EntityUid? Connector;
 
     /// <summary>
-    /// Species allowed to connect. Only humanoids of this species may use the connector.
-    /// КПБ = IPC.
+    /// Формат имени мозга для оцифрованной личности (когда подключается не борг).
+    /// Использует синтаксис string.Format, где {0} — случайное число.
     /// </summary>
     [DataField]
-    public ProtoId<SpeciesPrototype> RequiredSpecies = "IPC";
+    public string DefaultDigitizedName = "Оцифрованная личность";
 }
