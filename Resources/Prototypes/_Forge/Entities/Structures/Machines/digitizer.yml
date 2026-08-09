@@ -8,26 +8,25 @@
 
 - type: entity
   parent: BaseStructureDynamic
-  id: SoulkillerConnector
-  name: капсула С.У.И
-  description: Криокапсула корпорации Tel-Adi. КПБ ложится внутрь, капсула закрывается — и сознание оператора переносится в оболочку С.У.И. Снаружи капсулу можно вскрыть, насильно разорвав контакт и выдернув оператора обратно в тело.
-  suffix: ТелАди
+  id: Digitizer
+  name: Оцифровщик ядра
+  description: Криокапсула, позволяющая пернести свое сознание в ядро ИИ. Снаружи капсулу можно вскрыть, насильно разорвав контакт и выдернув оператора обратно в тело.
   components:
   - type: Transform
     anchored: true
   - type: Sprite
-    sprite: Forge/Structures/Machines/soulkiller_pod.rsi
+    sprite: Forge/Structures/Machines/digitizer.rsi
     layers:
-    - state: "off"
+    - state: "sleeper_close"
       map: ["base"]
   - type: Appearance
   - type: GenericVisualizer
     visuals:
       enum.SoulkillerConnectorVisuals.State:
         base:
-          Open: { state: open }
-          Closed: { state: "off" }
-          Active: { state: "on" }
+          Open: { state: sleeper_open }
+          Closed: { state: "sleeper_close" }
+          Active: { state: "sleeper_close" }
   # Капсула-хранилище: закрытие на КПБ подключает, открытие — насильно отключает.
   - type: EntityStorage
     open: false
@@ -68,3 +67,4 @@
     ports:
     - SoulkillerLink
   - type: SoulkillerConnector
+
