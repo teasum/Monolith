@@ -1,17 +1,7 @@
-# ══════════════════════════════════════════════════════════
-# Душегуб — ядро станционного ИИ Tel-Adi (КПБ) для переноса сознания.
-# Полноценный ИИ (камеры, глаз, прыжок к ядру), НО БЕЗ ЗАКОНОВ.
-# Пустое ядро пока оператор не подключится через SoulkillerConnector.
-# ══════════════════════════════════════════════════════════
-
-# Мозг Душегуба — копия StationAiBrain, НО без законов
-# (убраны SiliconLawProvider, SiliconLawBound, ActionViewLaws и SiliconLaws-UI).
-# Eye/ContentEye/InputMover/Access/Alerts/тег StationAi обязательны —
-# без них нет ока ИИ, движения и работающих действий.
 - type: entity
   parent: StationAiBrain
   id: StationAiBrainDigitalazed
-  name: Око
+  name: Оцифрованное сознание
   categories: [ HideSpawnMenu, DoNotMap ]
   components:
   - type: Sprite

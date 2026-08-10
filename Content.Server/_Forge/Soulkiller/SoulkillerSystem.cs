@@ -220,7 +220,9 @@ public sealed class SoulkillerSystem : SharedSoulkillerSystem
             return false;
         }
 
-        SetupBrainIdentity(user, brain, core.Comp);
+        // Устанавливаем единый формат имени для всех
+        SetupBrainIdentity(brain, core.Comp);
+
         var inhabitant = EnsureComp<SoulkillerInhabitantComponent>(brain);
         inhabitant.Core = core;
 
@@ -241,22 +243,13 @@ public sealed class SoulkillerSystem : SharedSoulkillerSystem
     }
 
     /// <summary>
-    /// Настраивает имя создаваемого мозга ИИ: копирует имя борга
-    /// или использует имя из прототипа с захардкоженным суффиксом PB-XX для остальных.
+    /// Устанавливает единое имя мозга ИИ: базовое имя из прототипа + захардкоженный суффикс PB-XX.
     /// </summary>
-    private void SetupBrainIdentity(EntityUid user, EntityUid brain, SoulkillerComponent coreComp)
+    private void SetupBrainIdentity(EntityUid brain, SoulkillerComponent coreComp)
     {
-        if (HasComp<BorgChassisComponent>(user))
-        {
-            _metaData.SetEntityName(brain, Name(user));
-        }
-        else
-        {
-            var randomDigits = _random.Next(10, 99);
-            // Базовое имя из прототипа + жестко зафиксированный в C# суффикс " PB-XX"
-            var formattedName = $"{coreComp.DefaultDigitizedName} PB-{randomDigits}";
-            _metaData.SetEntityName(brain, formattedName);
-        }
+        var randomDigits = _random.Next(10, 99);
+        var formattedName = $"{coreComp.DefaultDigitizedName} PB-{randomDigits}";
+        _metaData.SetEntityName(brain, formattedName);
     }
 
     private void TagBody(EntityUid body, Entity<SoulkillerComponent> core)
