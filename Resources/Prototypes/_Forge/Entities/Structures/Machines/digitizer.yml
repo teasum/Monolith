@@ -15,18 +15,19 @@
   - type: Transform
     anchored: true
   - type: Sprite
-    sprite: Forge/Structures/Machines/digitizer.rsi
+    #sprite: Forge/Structures/Machines/digitizer.rsi
+    sprite: Forge/Structures/Machines/borg_digitizer.rsi
     layers:
-    - state: "sleeper_close"
+    - state: "borgcharger-u1"
       map: ["base"]
   - type: Appearance
   - type: GenericVisualizer
     visuals:
       enum.SoulkillerConnectorVisuals.State:
         base:
-          Open: { state: sleeper_open }
-          Closed: { state: "sleeper_close" }
-          Active: { state: "sleeper_close" }
+          Open: { state: "borgcharger-u0" }
+          Closed: { state: "borgcharger-u1" }
+          Active: { state: "borgcharger-u1" }
   # Капсула-хранилище: закрытие на КПБ подключает, открытие — насильно отключает.
   - type: EntityStorage
     open: false
