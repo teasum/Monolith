@@ -30,6 +30,11 @@
     RLeg: MobReptilianRLegDigi # WWDP-Edit
     LFoot: MobReptilianLFootDigi # WWDP-Edit
     RFoot: MobReptilianRFootDigi # WWDP-Edit
+    MobCyberneticBishopRLeg:  MobCyberneticBishopRLegReptilian #Forge-Change
+    MobCyberneticBishopLLeg:  MobCyberneticBishopLLegReptilian #Forge-Change
+    MobCyberneticBishopRFoot: MobHumanoidAnyMarking #Forge-Change
+    MobCyberneticBishopLFoot: MobHumanoidAnyMarking #Forge-Change
+
 
 - type: markingPoints
   id: MobReptilianMarkingLimits
@@ -64,6 +69,20 @@
     Arms:
       points: 2
       required: false
+
+#Forge-Change-Start
+- type: humanoidBaseSprite
+  id: MobCyberneticBishopRLegReptilian
+  baseSprite:
+    sprite: forge/Mobs/Species/Reptilian/cyber_parts.rsi
+    state: r_leg_reptilian_bioshop
+  
+- type: humanoidBaseSprite
+  id: MobCyberneticBishopLLegReptilian 
+  baseSprite:
+    sprite: forge/Mobs/Species/Reptilian/cyber_parts.rsi
+    state: l_leg_reptilian_bioshop
+#Forge-Change-End
 
 - type: humanoidBaseSprite
   id: MobReptilianHead
