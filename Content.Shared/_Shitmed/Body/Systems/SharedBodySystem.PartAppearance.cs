@@ -1,20 +1,21 @@
-using System.Diagnostics;
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Linq;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
-using Content.Shared._Shitmed.Body.Events;
 using Content.Shared._Shitmed.Body.Part;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
+using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Utility;
 
 namespace Content.Shared.Body.Systems;
 public partial class SharedBodySystem
 {
-    [Dependency] private SharedHumanoidAppearanceSystem _humanoid = default!;
-    [Dependency] private MarkingManager _markingManager = default!;
+    [Dependency] private readonly SharedHumanoidAppearanceSystem _humanoid = default!;
+    [Dependency] private readonly MarkingManager _markingManager = default!;
+    [Dependency] private readonly INetManager _net = default!;
 
     private void InitializePartAppearances()
     {
@@ -79,6 +80,7 @@ public partial class SharedBodySystem
         }
 
         component.Markings = markingsByLayer;
+        Dirty(uid, component);
     }
 
     private string? CreateIdFromPart(HumanoidAppearanceComponent bodyAppearance, HumanoidVisualLayers part)
@@ -86,10 +88,9 @@ public partial class SharedBodySystem
         var speciesProto = Prototypes.Index(bodyAppearance.Species);
         var baseSprites = Prototypes.Index<HumanoidSpeciesBaseSpritesPrototype>(speciesProto.SpriteSet);
 
-        if (!baseSprites.Sprites.ContainsKey(part))
-            return null;
-
-        return HumanoidVisualLayersExtension.GetSexMorph(part, bodyAppearance.Sex, baseSprites.Sprites[part]);
+        return baseSprites.Sprites.TryGetValue(part, out var value)
+            ? HumanoidVisualLayersExtension.GetSexMorph(part, bodyAppearance.Sex, value)
+            : null;
     }
 
     public void ModifyMarkings(EntityUid uid,
@@ -118,7 +119,7 @@ public partial class SharedBodySystem
 
             var marking = new Marking(markingId, markingColors);
 
-            _humanoid.SetLayerVisibility((uid, bodyAppearance), targetLayer, true, null);
+            _humanoid.SetLayerVisibility((uid, bodyAppearance), targetLayer, true);
             _humanoid.AddMarking(uid, markingId, markingColors, true, true, bodyAppearance);
             if (!partAppearance.Comp.Markings.ContainsKey(targetLayer))
                 partAppearance.Comp.Markings[targetLayer] = new List<Marking>();
@@ -134,9 +135,15 @@ public partial class SharedBodySystem
 
     private void OnPartAttachedToBody(EntityUid uid, BodyComponent component, ref BodyPartAddedEvent args)
     {
-        if (!TryComp(args.Part, out BodyPartAppearanceComponent? partAppearance)
-            || !TryComp(uid, out HumanoidAppearanceComponent? bodyAppearance))
+        if (!TryComp(uid, out HumanoidAppearanceComponent? bodyAppearance)
+            || _net.IsClient
+            || !bodyAppearance.ProfileLoaded)
             return;
+
+        BodyPartAppearanceComponent? partAppearance = null;
+
+        if (!TryComp(args.Part, out partAppearance))
+            partAppearance = EnsureComp<BodyPartAppearanceComponent>(args.Part);
 
         if (partAppearance.ID != null)
             _humanoid.SetBaseLayerId(uid, partAppearance.Type, partAppearance.ID, sync: true, bodyAppearance);
@@ -148,16 +155,17 @@ public partial class SharedBodySystem
     {
         if (TerminatingOrDeleted(uid)
             || TerminatingOrDeleted(args.Part)
-            || !TryComp(uid, out HumanoidAppearanceComponent? bodyAppearance))
+            || !TryComp(uid, out HumanoidAppearanceComponent? bodyAppearance)
+            || _timing.ApplyingState)
             return;
 
+        BodyPartAppearanceComponent? partAppearance = null;
         // We check for this conditional here since some entities may not have a profile... If they dont
         // have one, and their part is gibbed, the markings will not be removed or applied properly.
-        if (!HasComp<BodyPartAppearanceComponent>(args.Part))
-            EnsureComp<BodyPartAppearanceComponent>(args.Part);
+        if (!TryComp<BodyPartAppearanceComponent>(args.Part, out partAppearance))
+            partAppearance = EnsureComp<BodyPartAppearanceComponent>(args.Part);
 
-        if (TryComp<BodyPartAppearanceComponent>(args.Part, out var partAppearance))
-            RemoveAppearance(uid, partAppearance, args.Part);
+        RemoveAppearance(uid, partAppearance, args.Part);
     }
 
     protected void UpdateAppearance(EntityUid target,
@@ -169,17 +177,17 @@ public partial class SharedBodySystem
         if (component.EyeColor != null)
         {
             bodyAppearance.EyeColor = component.EyeColor.Value;
-            _humanoid.SetLayerVisibility((target, bodyAppearance), HumanoidVisualLayers.Eyes, true, null);
+            _humanoid.SetLayerVisibility((target, bodyAppearance), HumanoidVisualLayers.Eyes, true);
         }
 
         if (component.Color != null)
             _humanoid.SetBaseLayerColor(target, component.Type, component.Color, true, bodyAppearance);
 
-        _humanoid.SetLayerVisibility((target, bodyAppearance), component.Type, true, null);
+        _humanoid.SetLayerVisibility((target, bodyAppearance), component.Type, true);
 
         foreach (var (visualLayer, markingList) in component.Markings)
         {
-            _humanoid.SetLayerVisibility((target, bodyAppearance), visualLayer, true, null);
+            _humanoid.SetLayerVisibility((target, bodyAppearance), visualLayer, true);
             foreach (var marking in markingList)
             {
                 _humanoid.AddMarking(target, marking.MarkingId, marking.MarkingColors, true, true, bodyAppearance);
@@ -194,9 +202,10 @@ public partial class SharedBodySystem
         if (!TryComp(entity, out HumanoidAppearanceComponent? bodyAppearance))
             return;
 
+        _humanoid.SetLayerVisibility(entity, component.Type, false);
         foreach (var (visualLayer, markingList) in component.Markings)
         {
-            _humanoid.SetLayerVisibility((entity, bodyAppearance), visualLayer, false, null);
+            _humanoid.SetLayerVisibility((entity, bodyAppearance), visualLayer, false);
         }
         RemoveBodyMarkings(entity, component, bodyAppearance);
     }

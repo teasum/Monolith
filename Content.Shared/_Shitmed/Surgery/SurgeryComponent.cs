@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Shitmed.Medical.Surgery;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-[Prototype("Surgeries")]
+[EntityCategory("Surgeries")]
 public sealed partial class SurgeryComponent : Component
 {
     [DataField, AutoNetworkedField]

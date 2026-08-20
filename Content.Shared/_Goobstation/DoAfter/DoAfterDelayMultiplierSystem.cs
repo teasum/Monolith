@@ -35,4 +35,6 @@ public sealed class GetDoAfterDelayMultiplierEvent(float multiplier = 1f) : Enti
     public float Multiplier = multiplier;
 
     public BodyPartType TargetBodyPart => BodyPartType.Hand;
+    public BodyPartSymmetry TargetBodyPartSymmetry => BodyPartSymmetry.None;
+    public bool RaiseOnParent => true;
 }

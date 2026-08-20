@@ -187,6 +187,7 @@ public abstract partial class SharedHandsSystem
         return GetActiveHand(entity)?.HeldEntity;
     }
 
+
     /// <summary>
     ///     Enumerate over hands, starting with the currently active hand.
     /// </summary>
@@ -312,6 +313,44 @@ public abstract partial class SharedHandsSystem
             return false;
 
         return hands.Hands.TryGetValue(handId, out hand);
+    }
+
+     /// <summary>
+    /// Gets the item currently held in the entity's specified hand. Returns null if no hands are present or there is no item.
+    /// </summary>
+    public EntityUid? GetHeldItem(Entity<HandsComponent?> ent, string? handId)
+    {
+        TryGetHeldItem(ent, handId, out var held);
+        return held;
+    }
+
+    /// <summary>
+    /// Gets the item currently held in the entity's specified hand. Returns false if no hands are present or there is no item.
+    /// </summary>
+    public bool TryGetHeldItem(Entity<HandsComponent?> ent, string? handId, [NotNullWhen(true)] out EntityUid? held)
+    {
+        held = null;
+        if (!Resolve(ent, ref ent.Comp, false))
+            return false;
+
+        // Sanity check to make sure this is actually a hand.
+        if (handId == null || !ent.Comp.Hands.ContainsKey(handId))
+            return false;
+
+        if (!ContainerSystem.TryGetContainer(ent, handId, out var container))
+            return false;
+
+        if (container.ContainedEntities.Count > 0)
+        {
+            held = container.ContainedEntities[0];
+            return true;
+        }
+        return held != null;
+    }
+
+    public bool HandIsEmpty(Entity<HandsComponent?> ent, string handId)
+    {
+        return GetHeldItem(ent, handId) == null;
     }
 
     public int CountFreeableHands(Entity<HandsComponent> hands)

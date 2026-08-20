@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Humanoid.Markings;
@@ -12,7 +14,7 @@ public sealed partial class BodyPartAppearanceComponent : Component
     /// <summary>
     ///     HumanoidVisualLayer type for this body part.
     /// </summary>
-    [DataField, AutoNetworkedField]
+    [DataField("visLayers"), AutoNetworkedField] // Goobstation - added visLayers
     public HumanoidVisualLayers Type { get; set; }
 
     /// <summary>

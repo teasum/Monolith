@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Shared.Humanoid;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -18,7 +20,7 @@ public sealed partial class SurgeryAddMarkingStepComponent : Component
     ///     against the entity to validate that the marking is not already present.
     /// </summary>
     [DataField]
-    public String MatchString = "";
+    public string MatchString = string.Empty;
 
     /// <summary>
     ///     What type of organ is required for this surgery?

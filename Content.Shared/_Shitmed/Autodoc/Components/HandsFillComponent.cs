@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Shared._Shitmed.Autodoc.Systems;
 using Robust.Shared.Prototypes;
 

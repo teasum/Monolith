@@ -1,12 +1,14 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Shared._Shitmed.Autodoc.Components;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
 
 namespace Content.Shared._Shitmed.Autodoc.Systems;
 
-public sealed partial class HandsFillSystem : EntitySystem
+public sealed class HandsFillSystem : EntitySystem
 {
-    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private readonly SharedHandsSystem _hands = default!;
 
     public override void Initialize()
     {
@@ -23,7 +25,7 @@ public sealed partial class HandsFillSystem : EntitySystem
         var coords = Transform(ent).Coordinates;
         foreach (var (name, fill) in ent.Comp.Hands)
         {
-            _hands.AddHand(ent, name, HandLocation.Middle, hands);
+            _hands.AddHand((ent, hands), name, HandLocation.Middle);
 
             if (fill is not {} id)
                 continue;

@@ -1,26 +1,26 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.EntitySystems;
 using Content.Shared.Body.Components;
-using Content.Shared.Chemistry.EntitySystems;
-using Content.Shared.Atmos;
+using Content.Shared.Body.Prototypes;
 using Content.Shared.Chemistry.Components;
-using Content.Shared.Clothing;
-using Content.Shared.Inventory.Events;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Inventory;
-using Robust.Shared.Containers;
+using Content.Shared.Inventory.Events;
+using Robust.Shared.Prototypes;
 using BreathToolComponent = Content.Shared.Atmos.Components.BreathToolComponent;
 using InternalsComponent = Content.Shared.Body.Components.InternalsComponent;
 
 namespace Content.Shared.Body.Systems;
 
-public sealed partial class LungSystem : EntitySystem
+public sealed class LungSystem : EntitySystem
 {
-    [Dependency] private SharedAtmosphereSystem _atmos = default!;
-    [Dependency] private InventorySystem _inventory = default!; // Goobstaiton
-    [Dependency] private SharedInternalsSystem _internals = default!;
-    [Dependency] private SharedSolutionContainerSystem _solutionContainerSystem = default!;
-
-    public static string LungSolutionName = "Lung";
+    [Dependency] private readonly SharedAtmosphereSystem _atmos = default!;
+    [Dependency] private readonly SharedInternalsSystem _internals = default!;
+    [Dependency] private readonly InventorySystem _inventory = default!; // Goobstaiton
+    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
 
     public override void Initialize()
     {
@@ -34,24 +34,6 @@ public sealed partial class LungSystem : EntitySystem
     private void OnGotUnequipped(Entity<BreathToolComponent> ent, ref GotUnequippedEvent args)
     {
         _atmos.DisconnectInternals(ent);
-    }
-
-    // Goobstation - Update component state on component toggle
-    private void OnBreathToolInit(Entity<BreathToolComponent> ent, ref ComponentInit args)
-    {
-        var comp = ent.Comp;
-
-        if (!_inventory.TryGetContainingEntity(ent.Owner, out var parent) || !_inventory.TryGetContainingSlot(ent.Owner, out var slot))
-            return;
-
-        if ((slot.SlotFlags & comp.AllowedSlots) == 0)
-            return;
-
-        if (TryComp(parent, out InternalsComponent? internals))
-        {
-            ent.Comp.ConnectedInternalsEntity = parent;
-            _internals.ConnectBreathTool((parent.Value, internals), ent);
-        }
     }
 
     private void OnGotEquipped(Entity<BreathToolComponent> ent, ref GotEquippedEvent args)
@@ -77,6 +59,25 @@ public sealed partial class LungSystem : EntitySystem
         }
     }
 
+    // Goobstation - Update component state on component toggle
+    private void OnBreathToolInit(Entity<BreathToolComponent> ent, ref ComponentInit args)
+    {
+        var comp = ent.Comp;
+
+        if (!_inventory.TryGetContainingEntity(ent.Owner, out var parent) || !_inventory.TryGetContainingSlot(ent.Owner, out var slot))
+            return;
+
+        if ((slot.SlotFlags & comp.AllowedSlots) == 0)
+            return;
+
+        if (TryComp(parent, out InternalsComponent? internals))
+        {
+            ent.Comp.ConnectedInternalsEntity = parent;
+            _internals.ConnectBreathTool((parent.Value, internals), ent);
+        }
+    }
+
+    // TODO: JUST METABOLIZE GASES DIRECTLY DON'T CONVERT TO REAGENTS!!! (Needs Metabolism refactor :B)
     public void GasToReagent(EntityUid uid, LungComponent lung)
     {
         if (!_solutionContainerSystem.ResolveSolution(uid, lung.SolutionName, ref lung.Solution, out var solution))
@@ -86,6 +87,9 @@ public sealed partial class LungSystem : EntitySystem
         _solutionContainerSystem.UpdateChemicals(lung.Solution.Value);
     }
 
+    /* This should really be moved to somewhere in the atmos system and modernized,
+     so that other systems, like CondenserSystem, can use it.
+     */
     private void GasToReagent(GasMixture gas, Solution solution)
     {
         foreach (var gasId in Enum.GetValues<Gas>())
@@ -100,6 +104,7 @@ public sealed partial class LungSystem : EntitySystem
                 continue;
 
             var amount = moles * Atmospherics.BreathMolesToReagentMultiplier;
+            amount = MathF.Min(amount, 30); // Goobstation - Prevent absurd amounts of reagent from being added. The maximum is arbitrary and as once wise Wizden contributor said Suck my Dick.
             solution.AddReagent(reagent, amount);
         }
     }
