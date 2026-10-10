@@ -184,58 +184,8 @@ namespace Content.Client.Construction.UI
 
             var (search, category) = args;
 
-            var recipes = new List<ConstructionPrototype>();
-
-            var isEmptyCategory = string.IsNullOrEmpty(category) || category == _forAllCategoryName;
-
-            if (isEmptyCategory)
-                _selectedCategory = string.Empty;
-            else
-                _selectedCategory = category;
-
-            foreach (var recipe in _prototypeManager.EnumeratePrototypes<ConstructionPrototype>())
-            {
-                if (recipe.Hide)
-                    continue;
-
-                if (_playerManager.LocalSession == null
-                || _playerManager.LocalEntity == null
-                || _whitelistSystem.IsWhitelistFail(recipe.EntityWhitelist, _playerManager.LocalEntity.Value))
-                    continue;
-
-                if (!string.IsNullOrEmpty(search))
-                {
-                    var q = search.Trim().ToLowerInvariant(); // Forge-Change
-                    var displayName = ConstructionRecipeLocale.GetLocalizedName(recipe); // Forge-Change
-                    if (!displayName.ToLowerInvariant().Contains(q) &&
-                        !recipe.Name.ToLowerInvariant().Contains(q)) // Forge-Change
-                        continue;
-                }
-
-                if (!isEmptyCategory)
-                {
-                    if (category == _favoriteCatName)
-                    {
-                        if (!_favoritedRecipes.Contains(recipe))
-                        {
-                            continue;
-                        }
-                    }
-                    else if (recipe.Category != category)
-                    {
-                        continue;
-                    }
-                }
-
-                recipes.Add(recipe);
-            }
-
-            // Forge-Change
-            recipes.Sort((a, b) => string.Compare(
-                ConstructionRecipeLocale.GetLocalizedName(a),
-                ConstructionRecipeLocale.GetLocalizedName(b),
-                StringComparison.CurrentCultureIgnoreCase));
             var actualRecipes = GetAndSortRecipes(args);
+
             var recipesList = _constructionView.Recipes;
             var recipesGrid = _constructionView.RecipesGrid;
             recipesGrid.RemoveAllChildren();
@@ -251,7 +201,7 @@ namespace Content.Client.Construction.UI
             else
             {
                 recipesList.PopulateList(actualRecipes);
-            }
+            }    
         }
 
         private void PopulateGrid(GridContainer recipesGrid,
@@ -461,17 +411,17 @@ namespace Content.Client.Construction.UI
             }
         }
 
-        private ItemList.Item GetItem(ConstructionPrototype recipe, ItemList itemList)
-        {
-            return new(itemList)
-            {
-                Metadata = recipe,
-                Text = ConstructionRecipeLocale.GetLocalizedName(recipe), // Forge-Change
-                Icon = _spriteSystem.Frame0(recipe.Icon),
-                TooltipEnabled = true,
-                TooltipText = ConstructionRecipeLocale.GetLocalizedDescription(recipe), // Forge-Change
-            };
-        }
+        // private ItemList.Item GetItem(ConstructionPrototype recipe, ItemList itemList)
+        // {
+        //     return new(itemList)
+        //     {
+        //         Metadata = recipe,
+        //         Text = ConstructionRecipeLocale.GetLocalizedName(recipe), // Forge-Change
+        //         Icon = _spriteSystem.Frame0(recipe.Icon),
+        //         TooltipEnabled = true,
+        //         TooltipText = ConstructionRecipeLocale.GetLocalizedDescription(recipe), // Forge-Change
+        //     };
+        // }
 
         private void BuildButtonToggled(bool pressed)
         {

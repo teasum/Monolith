@@ -1,4 +1,4 @@
-using Content.Server._NF.Construction.Components; // Frontier
+using Content.Shared._NF.Construction.Components; // Frontier
 using Content.Shared.Construction;
 using Content.Shared.Construction.Components;
 using JetBrains.Annotations;

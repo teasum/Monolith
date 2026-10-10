@@ -38,19 +38,19 @@ public static class ConstructionRecipeLocale
         return LetterBeforeDigitRegex.Replace(kebab, "$1-$2");
     }
 
-    public static string GetLocalizedName(ConstructionPrototype proto)
-    {
-        var key = $"construction-recipe-{PrototypeIdToRecipeKeySuffix(proto.ID)}";
-        if (Loc.TryGetString(key, out var localized))
-            return localized;
-        return proto.Name;
-    }
+    // public static string GetLocalizedName(ConstructionPrototype proto)
+    // {
+    //     var key = $"construction-recipe-{PrototypeIdToRecipeKeySuffix(proto.ID)}";
+    //     if (Loc.TryGetString(key, out var localized))
+    //         return localized;
+    //     return proto.Name;
+    // }
 
-    public static string GetLocalizedDescription(ConstructionPrototype proto)
-    {
-        var key = $"construction-recipe-{PrototypeIdToRecipeKeySuffix(proto.ID)}-desc";
-        if (Loc.TryGetString(key, out var localized))
-            return localized;
-        return proto.Description;
-    }
+    // public static string GetLocalizedDescription(ConstructionPrototype proto)
+    // {
+    //     var key = $"construction-recipe-{PrototypeIdToRecipeKeySuffix(proto.ID)}-desc";
+    //     if (Loc.TryGetString(key, out var localized))
+    //         return localized;
+    //     return proto.Description;
+    // }
 }
