@@ -17,8 +17,8 @@ public sealed class MechSystem : SharedMechSystem
 
         SubscribeLocalEvent<MechComponent, MechToggleEquipmentEvent>(OnToggleEquipmentAction);
         SubscribeLocalEvent<MechComponent, AppearanceChangeEvent>(OnAppearanceChanged);
-        SubscribeLocalEvent<MechComponent, PrepareMeleeLungeEvent>(OnPrepareMeleeLunge);
-        SubscribeLocalEvent<MechPilotComponent, GetMeleeAttackerEntityEvent>(OnGetMeleeAttacker);
+        //SubscribeLocalEvent<MechComponent, PrepareMeleeLungeEvent>(OnPrepareMeleeLunge);
+        //SubscribeLocalEvent<MechPilotComponent, GetMeleeAttackerEntityEvent>(OnGetMeleeAttacker);
     }
 
     private void OnToggleEquipmentAction(Entity<MechComponent> ent, ref MechToggleEquipmentEvent args)
@@ -64,18 +64,18 @@ public sealed class MechSystem : SharedMechSystem
         _sprite.SetDrawDepth((ent.Owner, args.Sprite), (int)drawDepth);
     }
 
-    private static void OnPrepareMeleeLunge(Entity<MechComponent> ent, ref PrepareMeleeLungeEvent args)
-    {
-        args.SpawnAtMap = true;
-        args.DisableTracking = true;
-    }
+    // private static void OnPrepareMeleeLunge(Entity<MechComponent> ent, ref PrepareMeleeLungeEvent args)
+    // {
+    //     args.SpawnAtMap = true;
+    //     args.DisableTracking = true;
+    // }
 
-    private static void OnGetMeleeAttacker(Entity<MechPilotComponent> ent, ref GetMeleeAttackerEntityEvent args)
-    {
-        if (args.Handled)
-            return;
+    // private static void OnGetMeleeAttacker(Entity<MechPilotComponent> ent, ref GetMeleeAttackerEntityEvent args)
+    // {
+    //     if (args.Handled)
+    //         return;
 
-        args.Attacker = ent.Comp.Mech;
-        args.Handled = true;
-    }
+    //     args.Attacker = ent.Comp.Mech;
+    //     args.Handled = true;
+    // }
 }

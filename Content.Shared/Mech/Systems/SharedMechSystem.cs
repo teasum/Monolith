@@ -33,7 +33,7 @@ using Content.Shared.Inventory.VirtualItem;
 using Robust.Shared.Configuration;
 using Content.Shared.Implants.Components;
 
-namespace Content.Shared.Mech.EntitySystems;
+namespace Content.Shared.Mech.Systems;
 
 /// <summary>
 /// Handles all of the interactions, UI handling, and items shennanigans for <see cref="MechComponent"/>
@@ -610,27 +610,27 @@ public abstract partial class SharedMechSystem : EntitySystem
 ///     Event raised when the battery is successfully removed from the mech,
 ///     on both success and failure
 /// </summary>
-[Serializable, NetSerializable]
-public sealed partial class RemoveBatteryEvent : SimpleDoAfterEvent
-{
-}
+// [Serializable, NetSerializable]
+// public sealed partial class RemoveBatteryEvent : SimpleDoAfterEvent
+// {
+// }
 
 /// <summary>
 ///     Event raised when a person removes someone from a mech,
 ///     on both success and failure
 /// </summary>
-[Serializable, NetSerializable]
-public sealed partial class MechExitEvent : SimpleDoAfterEvent
-{
-}
+// [Serializable, NetSerializable]
+// public sealed partial class MechExitEvent : SimpleDoAfterEvent
+// {
+// }
 
 /// <summary>
 ///     Event raised when a person enters a mech, on both success and failure
 /// </summary>
-[Serializable, NetSerializable]
-public sealed partial class MechEntryEvent : SimpleDoAfterEvent
-{
-}
+// [Serializable, NetSerializable]
+// public sealed partial class MechEntryEvent : SimpleDoAfterEvent
+// {
+// }
 
 /// <summary>
 ///     Event raised when an user attempts to fire a mech weapon to check if its battery is drained

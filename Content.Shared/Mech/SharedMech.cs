@@ -64,3 +64,5 @@ public sealed partial class MechEjectPilotEvent : InstantActionEvent
 public sealed partial class MechRadarUiEvent : InstantActionEvent
 {
 }
+
+public sealed class MechOpenEquipmentRadialEvent : EntityEventArgs;

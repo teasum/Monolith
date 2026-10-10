@@ -16,22 +16,22 @@ public sealed partial class MechGeneratorUiFragment : BoxContainer
         EjectButton.OnPressed += _ => OnEject?.Invoke();
     }
 
-    public void UpdateContents(MechGeneratorUiState state)
-    {
-        OutputLabel.Text = Loc.GetString("mech-generator-output-label",
-            ("rate", $"{state.ChargeCurrent:F0}/{state.ChargeMax:F0}"));
-        if (state.HasFuel)
-        {
-            FuelLabel.Visible = true;
-            FuelLabel.Text = Loc.GetString("mech-generator-fuel-label",
-                ("name", state.FuelName ?? ""),
-                ("amount", $"{state.FuelAmount:F0}/{state.FuelCapacity:F0}"));
-            EjectButton.Visible = true;
-        }
-        else
-        {
-            FuelLabel.Visible = false;
-            EjectButton.Visible = false;
-        }
-    }
+    // public void UpdateContents(MechGeneratorUiState state)
+    // {
+    //     OutputLabel.Text = Loc.GetString("mech-generator-output-label",
+    //         ("rate", $"{state.ChargeCurrent:F0}/{state.ChargeMax:F0}"));
+    //     if (state.HasFuel)
+    //     {
+    //         FuelLabel.Visible = true;
+    //         FuelLabel.Text = Loc.GetString("mech-generator-fuel-label",
+    //             ("name", state.FuelName ?? ""),
+    //             ("amount", $"{state.FuelAmount:F0}/{state.FuelCapacity:F0}"));
+    //         EjectButton.Visible = true;
+    //     }
+    //     else
+    //     {
+    //         FuelLabel.Visible = false;
+    //         EjectButton.Visible = false;
+    //     }
+    // }
 }
