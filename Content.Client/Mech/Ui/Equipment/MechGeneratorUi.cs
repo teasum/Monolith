@@ -32,6 +32,6 @@ public sealed partial class MechGeneratorUi : UIFragment
         if (state is not MechGeneratorUiState genState)
             return;
 
-        _fragment?.UpdateContents(genState);
+        //_fragment?.UpdateContents(genState);
     }
 }

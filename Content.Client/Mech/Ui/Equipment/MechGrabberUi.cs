@@ -22,8 +22,11 @@ public sealed partial class MechGrabberUi : UIFragment
 
         _fragment = new MechGrabberUiFragment();
 
-        userInterface.SendMessage(new MechGrabberEjectMessage(_entMan.GetNetEntity(fragmentOwner.Value),
+        _fragment.OnEjectAction += e =>
+        {
+            userInterface.SendMessage(new MechGrabberEjectMessage(_entMan.GetNetEntity(fragmentOwner.Value),
                 _entMan.GetNetEntity(e)));
+        };
     }
 
     public override void UpdateState(BoundUserInterfaceState state)
@@ -31,6 +34,6 @@ public sealed partial class MechGrabberUi : UIFragment
         if (state is not MechGrabberUiState grabberState)
             return;
 
-        _fragment?.UpdateContents(grabberState);
+        //_fragment?.UpdateContents(grabberState);
     }
 }

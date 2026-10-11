@@ -49,20 +49,24 @@ public record struct AttemptRemoveMechEquipmentEvent()
     public bool Cancelled = false;
 }
 
-public sealed partial class MechToggleEquipmentEvent : InstantActionEvent
+/// <summary>
+/// Raised on module when it is inserted into a mech
+/// </summary>
+[ByRefEvent]
+public readonly record struct MechModuleInsertedEvent(EntityUid Mech)
 {
+    public readonly EntityUid Mech = Mech;
 }
-
-public sealed partial class MechOpenUiEvent : InstantActionEvent
-{
-}
-
-public sealed partial class MechEjectPilotEvent : InstantActionEvent
-{
-}
-
-public sealed partial class MechRadarUiEvent : InstantActionEvent
-{
-}
+public sealed partial class MechRadarUiEvent : InstantActionEvent;
+public sealed partial class MechToggleEquipmentEvent : InstantActionEvent;
 
 public sealed class MechOpenEquipmentRadialEvent : EntityEventArgs;
+
+public sealed partial class MechOpenUiEvent : InstantActionEvent;
+
+public sealed partial class MechEjectPilotEvent : InstantActionEvent;
+[Serializable, NetSerializable]
+public sealed class RequestMechEquipmentSelectEvent : EntityEventArgs
+{
+    public NetEntity? Equipment;
+}

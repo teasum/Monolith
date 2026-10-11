@@ -229,7 +229,7 @@ public class RadialMenu : BaseWindow
 /// from interactions.
 /// </summary>
 [Virtual]
-public abstract class RadialMenuButtonBase : BaseButton
+public class RadialMenuButtonBase : BaseButton
 {
     /// <inheritdoc />
     protected RadialMenuButtonBase()

@@ -324,7 +324,7 @@ public sealed partial class MechMenu : FancyWindow
         foreach (var netEnt in equipment)
         {
             var ent = _entityManager.GetEntity(netEnt);
-            //var size = _entityManager.GetComponentOrNull<MechEquipmentComponent>(ent)?.Size ?? 1;
+            var size = _entityManager.GetComponentOrNull<MechEquipmentComponent>(ent)?.Size ?? 1;
             var control = HelperUpdateView(netEnt, ent, size);
             control.OnRemoveButtonPressed += () => OnRemoveButtonPressed?.Invoke(ent);
             EquipmentControlContainer.AddChild(control);

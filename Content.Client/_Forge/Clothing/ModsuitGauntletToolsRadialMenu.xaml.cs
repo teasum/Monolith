@@ -179,7 +179,7 @@ public sealed partial class ModsuitGauntletToolsRadialMenu : RadialMenu
     }
 }
 
-public sealed class ModsuitGauntletToolsRadialMenuButton : RadialMenuTextureButtonWithSector
+public sealed class ModsuitGauntletToolsRadialMenuButton : RadialMenuButtonWithSector
 {
     public ModsuitGauntletToolSlot Slot { get; set; }
 }

@@ -15,6 +15,6 @@
         </ItemList>
         <Label Name="SpaceLabel"
                HorizontalAlignment="Right"
-               StyleClasses="LabelSubText"></
+               StyleClasses="LabelSubText" />
     </BoxContainer>
 </equipment:MechGrabberUiFragment>

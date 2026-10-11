@@ -44,7 +44,7 @@ public sealed class MechInterfaceSystem : EntitySystem
             MechUiKey.Key,
             subs =>
             {
-                subs.Event<MechEquipmentRemoveMessage>(HandleEquipmentRemove);
+                //subs.Event<MechEquipmentRemoveMessage>(HandleEquipmentRemove);
                 //subs.Event<MechModuleRemoveMessage>(HandleModuleRemove);
                 //subs.Event<MechCabinAirMessage>(HandleCabinPurge);
 
@@ -56,8 +56,8 @@ public sealed class MechInterfaceSystem : EntitySystem
                 subs.Event<MechCardLockResetMessage>(HandleCardLockReset);
 
                 subs.Event<MechEquipmentUiMessage>(HandleEquipmentUiMessageRelay);
-                subs.Event<MechGrabberEjectMessage>(HandleEquipmentUiMessageRelay);
-                subs.Event<MechSoundboardPlayMessage>(HandleEquipmentUiMessageRelay);
+                //subs.Event<MechGrabberEjectMessage>(HandleEquipmentUiMessageRelay);
+                //subs.Event<MechSoundboardPlayMessage>(HandleEquipmentUiMessageRelay);
                 //subs.Event<MechGeneratorEjectFuelMessage>(HandleEquipmentUiMessageRelay);
             });
     }
@@ -200,7 +200,7 @@ public sealed class MechInterfaceSystem : EntitySystem
         if (!_uiSystem.IsUiOpen(ent.Owner, MechUiKey.Key))
             return;
 
-        ent.Comp.LastUiUpdate = _gameTiming.CurTime;
+        //ent.Comp.LastUiUpdate = _gameTiming.CurTime;
 
         var equipment = new List<NetEntity>();
         // foreach (var equipmentEnt in ent.Comp.EquipmentContainer.ContainedEntities)
