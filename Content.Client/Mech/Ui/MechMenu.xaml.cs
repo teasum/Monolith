@@ -34,16 +34,16 @@ public sealed partial class MechMenu : FancyWindow
     public event Action<EntityUid>? OnRemoveButtonPressed;
     public event Action<EntityUid>? OnRemoveModuleButtonPressed;
 
-    public event Action<bool>? OnAirtightChanged;
-    public event Action<bool>? OnFanToggle;
-    public event Action<bool>? OnFilterToggle;
+    //public event Action<bool>? OnAirtightChanged;
+    //public event Action<bool>? OnFanToggle;
+    //public event Action<bool>? OnFilterToggle;
     public event Action? OnDnaLockRegister;
     public event Action? OnDnaLockToggle;
     public event Action? OnDnaLockReset;
     public event Action? OnCardLockRegister;
     public event Action? OnCardLockToggle;
     public event Action? OnCardLockReset;
-    public event Action? OnCabinPurge;
+    //public event Action? OnCabinPurge;
 
     public MechMenu()
     {
@@ -70,11 +70,11 @@ public sealed partial class MechMenu : FancyWindow
     private void InitializeEventHandlers()
     {
         // Cabin controls with access checks.
-        AirtightButton.OnToggled += args => OnAirtightChanged?.Invoke(args.Pressed);
-        CabinPurgeButton.OnPressed += _ => OnCabinPurge?.Invoke();
+        //AirtightButton.OnToggled += args => OnAirtightChanged?.Invoke(args.Pressed);
+        //CabinPurgeButton.OnPressed += _ => OnCabinPurge?.Invoke();
 
         // Fan controls.
-        FanToggle.StateChanged += isOn => OnFanToggle?.Invoke(isOn);
+        //FanToggle.StateChanged += isOn => OnFanToggle?.Invoke(isOn);
 
         // Lock controls.
         DnaLockRegisterButton.OnPressed += _ => OnDnaLockRegister?.Invoke();
@@ -86,7 +86,7 @@ public sealed partial class MechMenu : FancyWindow
         CardLockResetButton.OnPressed += _ => OnCardLockReset?.Invoke();
 
         // Filter control.
-        FilterEnabledCheck.OnToggled += args => OnFilterToggle?.Invoke(args.Pressed);
+        //FilterEnabledCheck.OnToggled += args => OnFilterToggle?.Invoke(args.Pressed);
     }
 
     // public void UpdateMechStats(MechBoundUiState state)

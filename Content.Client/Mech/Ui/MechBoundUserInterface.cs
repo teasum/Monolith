@@ -37,18 +37,18 @@ public sealed class MechBoundUserInterface(EntityUid owner, Enum uiKey) : BoundU
         {
             _pred.SendMessage(new MechEquipmentRemoveMessage(EntMan.GetNetEntity(uid)));
         };
-        _menu.OnRemoveModuleButtonPressed += uid =>
-        {
-            _pred.SendMessage(new MechModuleRemoveMessage(EntMan.GetNetEntity(uid)));
-        };
+        // _menu.OnRemoveModuleButtonPressed += uid =>
+        // {
+        //     _pred.SendMessage(new MechModuleRemoveMessage(EntMan.GetNetEntity(uid)));
+        // };
 
         // Cabin control
-        _menu.OnAirtightChanged += isAirtight => _airtightCoalescer.Set(isAirtight);
-        _menu.OnFanToggle += isActive => _fanCoalescer.Set(isActive);
-        _menu.OnFilterToggle += enabled => _filterCoalescer.Set(enabled);
+        //_menu.OnAirtightChanged += isAirtight => _airtightCoalescer.Set(isAirtight);
+        //_menu.OnFanToggle += isActive => _fanCoalescer.Set(isActive);
+        //_menu.OnFilterToggle += enabled => _filterCoalescer.Set(enabled);
 
         // Direct action
-        _menu.OnCabinPurge += () => _pred.SendMessage(new MechCabinAirMessage());
+        //_menu.OnCabinPurge += () => _pred.SendMessage(new MechCabinAirMessage());
 
         // DNA lock
         _menu.OnDnaLockRegister += () => _pred.SendMessage(new MechDnaLockRegisterMessage());
@@ -80,24 +80,24 @@ public sealed class MechBoundUserInterface(EntityUid owner, Enum uiKey) : BoundU
             return;
 
         // Apply any pending predicted messages to state
-        foreach (var replayMsg in _pred!.MessagesToReplay())
-        {
-            switch (replayMsg)
-            {
-                case MechAirtightMessage airtight:
-                    mechState.IsAirtight = airtight.IsAirtight;
-                    break;
+        // foreach (var replayMsg in _pred!.MessagesToReplay())
+        // {
+        //     switch (replayMsg)
+        //     {
+        //         case MechAirtightMessage airtight:
+        //             mechState.IsAirtight = airtight.IsAirtight;
+        //             break;
 
-                case MechFanToggleMessage fanToggle:
-                    mechState.FanActive = fanToggle.IsActive;
-                    mechState.FanState = fanToggle.IsActive ? MechFanState.On : MechFanState.Off;
-                    break;
+        //         case MechFanToggleMessage fanToggle:
+        //             mechState.FanActive = fanToggle.IsActive;
+        //             mechState.FanState = fanToggle.IsActive ? MechFanState.On : MechFanState.Off;
+        //             break;
 
-                case MechFilterToggleMessage filterToggle:
-                    mechState.FilterEnabled = filterToggle.Enabled;
-                    break;
-            }
-        }
+        //         case MechFilterToggleMessage filterToggle:
+        //             mechState.FilterEnabled = filterToggle.Enabled;
+        //             break;
+        //     }
+        // }
 
         _menu?.UpdateState(mechState);
     }
