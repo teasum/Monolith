@@ -22,4 +22,4 @@ jobs:
         with:
           dirtyLabel: "S: Merge Conflict"
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          commentOnDirty: "ыыыыыыыыыыыыыыыы"
+          commentOnDirty: "В этом пулл-реквесте есть конфликты. Пожалуйста решите их, иначе мы не сможем рассмотреть этот пулл-реквест."
