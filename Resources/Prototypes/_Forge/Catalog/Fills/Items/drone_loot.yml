@@ -1,0 +1,298 @@
+#region BASE DRONE LOOTBOX PROTO
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: DroneLootBoxBase
+  name: blackbox data recorder
+  suffix: Drone loot
+  components:
+  - type: Sprite
+    sprite: _NF/Objects/Tools/bundles.rsi
+    scale: 0.7, 0.7
+  - type: Item
+    size: Huge
+  - type: SpawnItemsOnUse
+    sound:
+      path: /Audio/Machines/windoor_open.ogg
+
+- type: entity
+  abstract: true
+  parent: DroneLootBoxBase
+  id: DroneLootBoxEngBase
+  components:
+  - type: Sprite
+    state: engi-base
+
+- type: entity
+  abstract: true
+  parent: DroneLootBoxBase
+  id: DroneLootBoxMilBase
+  components:
+  - type: Sprite
+    state: mili-base
+
+- type: entity
+  abstract: true
+  parent: DroneLootBoxBase
+  id: DroneLootBoxSciBase
+  components:
+  - type: Sprite
+    state: sci-base
+
+#region SPAWNERS T0 ENG
+- type: entity
+  parent: MarkerBasePlaceFree
+  name: random parts drone T0
+  id: SpawnStockPartDroneT0
+  category: [ HideSpawnMenu ]
+  suffix: Dungeon
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+        scale: 0.7, 0.7
+      - sprite: _NF/Objects/Misc/stock_parts.rsi
+        state: bluespace_matter_bin
+      - sprite: _NF/Markers/general.rsi
+        state: questionmark
+        color: red
+  - type: RandomSpawner
+    prototypes:
+    # T1
+    - MicroManipulatorStockPart
+    - MatterBinStockPart
+    - CapacitorStockPart
+    # T2
+    - AdvancedCapacitorStockPart
+    - NanoManipulatorStockPart
+    - AdvancedMatterBinStockPart
+    chance: 0.95
+    offset: 0.0
+    rarePrototypes:
+    # T3
+    - SuperCapacitorStockPart
+    - PicoManipulatorStockPart
+    - SuperMatterBinStockPart
+    rareChance: 0.05
+
+- type: entity
+  parent: MarkerBasePlaceFree
+  id: SpawnPowerCellDroneT0
+  name: random power cell drone T0
+  category: [ HideSpawnMenu ]
+  suffix: Dungeon
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+        scale: 0.7, 0.7
+      - sprite: Objects/Power/power_cells.rsi
+        state: hyper
+      - sprite: _NF/Markers/general.rsi
+        state: questionmark
+        color: red
+  - type: RandomSpawner
+    prototypes:
+    - PowerCellMedium
+    - PowerCellHigh
+    chance: 0.95
+    offset: 0.0
+    rarePrototypes:
+    - PowerCellHyper
+    rareChance: 0.05
+
+#region DRONE LOOT T0
+- type: entity
+  parent: DroneLootBoxEngBase
+  id: DroneLootBoxEngT0
+  name: eng drone loot box T0
+  suffix: Drone loot T0
+  components:
+    - type: SpawnItemsOnUse
+      items:
+        - id: SpawnStockPartDroneT0
+          amount: 1
+          maxamount: 4
+          prob: 0.8
+        - id: SheetPlastitanium10
+          amount: 1
+          prob: 0.1
+        - id: SpawnDungeonLootCircuitBoardEngi
+          prob: 0.3
+        - id: SpawnDungeonLootCircuitBoardScience
+          prob: 0.3
+        - id: SpawnDungeonLootCircuitBoardSalvage
+          prob: 0.3
+        - id: SpawnDungeonLootCircuitBoard
+          prob: 0.3
+        - id: SpawnPowerCellDroneT0
+          prob: 0.3
+        - id: SpawnDungeonLootFlatpacks
+          prob: 0.3
+
+- type: entity
+  parent: DroneLootBoxMilBase
+  id: DroneLootBoxMilT0
+  name: mil drone loot box T0
+  suffix: Drone loot T0
+  components:
+    - type: SpawnItemsOnUse
+      items:
+        #Guns
+        - id: SpawnDungeonLootVaultGuns
+          amount: 2
+          maxamount: 6
+          prob: 0.8
+        - id: SpawnDungeonLootArmoryRare
+          amount: 1
+          maxamount: 4
+          prob: 0.4
+        - id: SpawnDungeonLootGunT4
+          prob: 0.1
+        #Armor
+        - id: SpawnDungeonLootArmoryClutter
+          amount: 1
+          maxamount: 3
+          prob: 0.3
+
+- type: entity
+  parent: DroneLootBoxSciBase
+  id: DroneLootBoxSciT0
+  name: sci drone loot box T0
+  suffix: Drone loot T0
+  components:
+    - type: SpawnItemsOnUse
+      items:
+        - id: SpawnLootTechDisksT1
+          amount: 2
+          maxamount: 6
+          prob: 0.8
+
+
+#region SPAWNERS T1 ENG
+- type: entity
+  parent: MarkerBasePlaceFree
+  id: SpawnStockPartDroneT1
+  name: random parts drone T1
+  category: [ HideSpawnMenu ]
+  suffix: Dungeon
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+        scale: 0.7, 0.7
+      - sprite: _NF/Objects/Misc/stock_parts.rsi
+        state: bluespace_matter_bin
+      - sprite: _NF/Markers/general.rsi
+        state: questionmark
+        color: red
+  - type: RandomSpawner
+    prototypes:
+    # T3
+    - SuperCapacitorStockPart
+    - PicoManipulatorStockPart
+    - SuperMatterBinStockPart
+    chance: 0.95
+    offset: 0.0
+    rarePrototypes:
+    # T4
+    - QuadraticCapacitorStockPart
+    - FemtoManipulatorStockPart
+    - BluespaceMatterBinStockPart
+    rareChance: 0.15
+
+- type: entity
+  parent: MarkerBasePlaceFree
+  id: SpawnPowerCellDroneT1
+  name: random power cell drone T1
+  category: [ HideSpawnMenu ]
+  suffix: Dungeon
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+        scale: 0.7, 0.7
+      - sprite: Objects/Power/power_cells.rsi
+        state: hyper
+      - sprite: _NF/Markers/general.rsi
+        state: questionmark
+        color: red
+  - type: RandomSpawner
+    prototypes:
+    - PowerCellHigh
+    - PowerCellHyper
+    chance: 0.95
+    offset: 0.0
+    rarePrototypes:
+    - PowerCellMicroreactor
+    - PowerCellPotato
+    rareChance: 0.15
+
+
+
+#region DRONE LOOT T1
+- type: entity
+  parent: DroneLootBoxEngBase
+  id: DroneLootBoxEngT1
+  name: eng drone loot box T1
+  suffix: Drone loot T1
+  components:
+    - type: SpawnItemsOnUse
+      items:
+        - id: SpawnStockPartDroneT1
+          amount: 3
+          maxamount: 7
+          prob: 0.8
+        - id: SpawnPowerCellDroneT1
+          amount: 1
+          maxamount: 4
+          prob: 0.8
+        - id: SheetPlastitanium10
+          amount: 1
+          maxamount: 3
+          prob: 0.5
+
+
+- type: entity
+  parent: DroneLootBoxMilBase
+  id: DroneLootBoxMilT1
+  name: mil drone loot box T1
+  suffix: Drone loot T1
+  components:
+    - type: SpawnItemsOnUse
+      items:
+        #Guns
+        - id: SpawnDungeonLootVaultGuns
+          amount: 2
+          maxamount: 6
+          prob: 0.8
+        - id: SpawnDungeonLootArmoryRare
+          amount: 1
+          maxamount: 4
+          prob: 0.4
+        - id: SpawnDungeonLootGunT4
+          prob: 0.1
+        #Armor
+        - id: SpawnDungeonLootArmoryClutter
+          amount: 1
+          maxamount: 3
+          prob: 0.3
+
+- type: entity
+  parent: DroneLootBoxSciBase
+  id: DroneLootBoxSciT1
+  name: sci drone loot box T1
+  suffix: Drone loot T1
+  components:
+    - type: SpawnItemsOnUse
+      items:
+        - id: SpawnLootTechDisksT1
+          amount: 2
+          maxamount: 6
+          prob: 0.8
+
+
+
+
+
+
