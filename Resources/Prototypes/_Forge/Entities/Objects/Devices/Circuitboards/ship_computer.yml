@@ -1,0 +1,10 @@
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: ShipComputerCircuitboard
+  name: ship server computer board
+  description: A printed circuit board for a modular ship computer.
+  components:
+  - type: Sprite
+    state: cpu_command
+  - type: ComputerBoard
+    prototype: ShipComputerBase

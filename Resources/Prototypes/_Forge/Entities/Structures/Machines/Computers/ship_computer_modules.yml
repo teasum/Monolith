@@ -1,0 +1,90 @@
+- type: entity
+  id: ShipComputerBase
+  parent: BaseComputerAiAccess
+  name: modular ship computer
+  description: A shipboard computer with replaceable processing and power modules.
+  components:
+  - type: ShipComputer
+    basePowerLoad: 100
+    consoleSinkPort: ShipComputerServerSink
+    defaultModules:
+    - ShipComputerGunneryServer
+    thrusterProcessingPowerCost: 2
+    gyroscopeProcessingPowerCost: 1
+    weaponProcessingPowerCost: 1
+    processorSlot:
+      name: ship-computer-slot-processor
+      whitelist:
+        components:
+        - ShipComputerProcessor
+    powerSupplySlot:
+      name: ship-computer-slot-power-supply
+      whitelist:
+        components:
+        - ShipComputerPowerSupply
+  - type: ApcPowerReceiver
+    powerLoad: 100
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - map: [ "computerLayerBody" ]
+      state: computer
+    - map: [ "computerLayerKeyboard" ]
+      state: generic_keyboard
+    - map: [ "computerLayerScreen" ]
+      state: comm
+
+- type: entity
+  id: ShipComputerPowerSupplyBasic
+  name: ship computer power supply
+  description: A replaceable power supply for a modular ship computer.
+  components:
+  - type: ShipComputerPowerSupply
+  - type: ShipComputerPart
+    powerSupplyCapacity: 5000
+    powerLoad: 50
+
+- type: entity
+  id: ShipComputerCpuBasic
+  name: ship computer processor
+  description: A processor that provides computing capacity at an electrical cost.
+  components:
+  - type: ShipComputerProcessor
+  - type: ShipComputerPart
+    processingPower: 60
+    powerLoad: 500
+
+- type: entity
+  id: ShipComputerGunneryServer
+  name: gunnery server module
+  description: Enables remote control of ship guns and turrets.
+  components:
+  - type: ShipComputerModule
+    processingPowerCost: 4
+    powerLoad: 800
+    providesFireControl: true
+    addToServer:
+    - type: FireControlServer
+      processingPower: 0
+      maxWeapons: 2147483647
+
+- type: entity
+  id: ShipComputerTurretServer
+  name: turret server module
+  description: Provides computing capacity for coordinated turret control.
+  components:
+  - type: ShipComputerModule
+    processingPowerCost: 8
+    powerLoad: 600
+    addToGrid:
+    - type: TurretCommandServer
+      faction: Ship
+
+- type: entity
+  id: ShipComputerCommunicationsServer
+  name: communications server module
+  description: Provides ship communications processing.
+  components:
+  - type: ShipComputerModule
+    processingPowerCost: 5
+    powerLoad: 400

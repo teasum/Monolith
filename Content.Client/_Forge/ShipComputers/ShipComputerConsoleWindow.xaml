@@ -1,0 +1,14 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      Title="{Loc 'ship-computer-console-title'}"
+                      MinSize="420 300">
+    <BoxContainer Orientation="Vertical" SeparationOverride="6">
+        <Label Name="ConnectionLabel" />
+        <Label Name="ProcessingLabel" />
+        <Label Name="PowerLabel" />
+        <Label Text="{Loc 'ship-computer-console-modules'}" />
+        <ScrollContainer VerticalExpand="True">
+            <BoxContainer Name="ModuleList" Orientation="Vertical" SeparationOverride="4" />
+        </ScrollContainer>
+    </BoxContainer>
+</controls:FancyWindow>

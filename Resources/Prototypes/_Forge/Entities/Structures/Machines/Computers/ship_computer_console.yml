@@ -1,0 +1,25 @@
+- type: entity
+  parent: BaseComputerAiAccess
+  id: ComputerShipServerManagement
+  name: ship server management console
+  description: Remotely monitors a modular ship computer and opens installed module interfaces.
+  components:
+  - type: ShipComputerConsole
+    serverSourcePort: ShipComputerConsoleSource
+  - type: ActivatableUI
+    key: enum.ShipComputerConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.ShipComputerConsoleUiKey.Key:
+        type: ShipComputerConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - map: [ "computerLayerBody" ]
+      state: computer
+    - map: [ "computerLayerKeyboard" ]
+      state: generic_keyboard
+    - map: [ "computerLayerScreen" ]
+      state: comm

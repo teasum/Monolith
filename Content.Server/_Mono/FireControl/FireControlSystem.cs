@@ -23,6 +23,7 @@ using Content.Shared.Interaction;
 using Content.Shared._Mono.ShipGuns;
 using Content.Shared.Examine;
 using Content.Server.Salvage.Expeditions;
+using Content.Shared._Forge.ShipComputers; // Forge-Change
 
 namespace Content.Server._Mono.FireControl;
 
@@ -337,6 +338,18 @@ public sealed partial class FireControlSystem : EntitySystem
     {
         if (!Resolve(controllable, ref component))
             return 0;
+
+        // Forge-Change-start: use the ship computer's configured per-weapon compute draw.
+        var gridServer = TryGetGridServer(controllable);
+        if (gridServer.ServerUid is { } serverUid &&
+            TryComp<ShipComputerComponent>(serverUid, out var shipComputer))
+            return Math.Max(0, (int) MathF.Ceiling(shipComputer.WeaponProcessingPowerCost));
+        // Forge-Change-end
+
+        // Forge-Change-start: allow weapon prototypes to configure computer processing demand.
+        if (TryComp<ShipWeaponProcessingCostComponent>(controllable, out var configuredCost))
+            return Math.Max(0, (int) MathF.Ceiling(configuredCost.Cost));
+        // Forge-Change-end
 
         if (!TryComp<ShipGunClassComponent>(controllable, out var classComponent))
             return 0;

@@ -1,0 +1,9 @@
+- type: latheRecipe
+  id: ShipComputerCircuitboard
+  result: ShipComputerCircuitboard
+  completetime: 5
+  materials:
+    Steel: 150
+    Glass: 750
+    Gold: 200
+    Silver: 100

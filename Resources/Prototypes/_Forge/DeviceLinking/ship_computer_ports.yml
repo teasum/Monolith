@@ -1,0 +1,9 @@
+- type: sourcePort
+  id: ShipComputerConsoleSource
+  name: ship-computer-console-port-name
+  description: ship-computer-console-port-description
+
+- type: sinkPort
+  id: ShipComputerServerSink
+  name: ship-computer-console-port-name
+  description: ship-computer-console-port-description
